@@ -45,12 +45,14 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
  * \param lenEmpresas int Límite del Array de Empresas
  * \param arrayTipos[] eTipo Array de Tipos
  * \param lenTipos int Límite del Array de Tipos
+ * \param arrayChoferes[] eChofer Array de Choferes
+ * \param lenChoferes int Límite del Array de Choferes
  * \param idMicro int* ID del micro a cargar
  *
  * \return int -1 si hubo un error, 0 si está todo ok
  *
  */
-int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int* idMicro);
+int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, eChofer arrayChoferes[], int lenChoferes, int* idMicro);
 
 
 /** \brief Carga un micro en el índice especificado
@@ -61,13 +63,15 @@ int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpre
  * \param lenEmpresas int Límite del Array de Empresas
  * \param arrayTipos[] eTipo Array de Tipos
  * \param lenTipos int Límite del Array de Tipos
+ * \param arrayChoferes[] eChofer Array de Choferes
+ * \param lenChoferes int Límite del Array de Choferes
  * \param indiceMicro int Índice del micro a ser cargado
  * \param idMicro int* ID del micro a cargar
  *
  * \return int -1 si hubo un error, 0 si está todo ok
  *
  */
-int eMicro_cargarEnArray(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int indiceMicro, int* idMicro);
+int eMicro_cargarEnArray(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, eChofer arrayChoferes[], int lenChoferes, int indiceMicro, int* idMicro);
 
 
 /** \brief Modifica el micro en el índice especificado, cambiando el dato seleccionado por el usuario
@@ -402,6 +406,36 @@ int contarCantMicrosDeEmpresas(eMicro arrayMicros[], int lenMicros, eEmpresa arr
  *
  */
 int contarCantMicrosXEmpresa(eMicro arrayMicros[], int lenMicros, int idEmpresa, int* cont);
+
+
+/** \brief Cuenta la cantidad de micros de una empresa por tipo
+ *
+ * \param arrayMicros[] eMicro Array de Micros
+ * \param lenMicros int Límite del Array de Micros
+ * \param idEmpresa int ID de la empresa a contar
+ * \param cont int* Contador de micros de la empresa
+ *
+ * \return int -1 si hubo un error, 0 si está todo ok
+ *
+ */
+int contarCantMicrosEmpresaTipo(eMicro arrayMicros[], int lenMicros, int idEmpresa, int idTipo, int* cont);
+
+
+/** \brief Calcula y muestra el promedio de micros de un tipo sobre el total de una empresa
+ *
+ * \param arrayMicros[] eMicro Array de Micros
+ * \param lenMicros int Límite del Array de Micros
+ * \param arrayEmpresas[] eEmpresa Array de Empresas
+ * \param lenEmpresas int Límite del Array de Empresas
+ * \param arrayTipos[] eTipo Array de Tipos
+ * \param lenTipos int Límite del Array de Tipos
+ * \param indiceEmpresa int Índice de la empresa
+ * \param indiceTipo int Índice del tipo
+ *
+ * \return int -1 si hubo un error, 0 si está todo ok
+ *
+ */
+int informarPromedioMicrosEmpresa(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int indiceEmpresa, int indiceTipo);
 
 
 /** \brief Calcula la menor cantidad de micros de las empresas

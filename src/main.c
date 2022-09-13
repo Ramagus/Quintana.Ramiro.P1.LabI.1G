@@ -22,7 +22,7 @@ int main(void)
 	eViaje arrayViajes[VIAJE_MAX];
 
 	int opcion;
-	char respuesta;
+	int flagExit = 0;
 
 	int auxOrder;
 
@@ -63,7 +63,7 @@ int main(void)
 						if(!eMicro_arrayIsEmpty(arrayMicros, MICRO_MAX))
 						{
 							if(!eMicro_elegirSentidoOrdenamiento(&auxOrder) &&
-							   !eMicro_ordenar(arrayMicros, MICRO_MAX, EMPRESA, CAPACIDAD, auxOrder) &&
+							   !eMicro_ordenar(arrayMicros, MICRO_MAX, EMPRESA_MICRO, CAPACIDAD_MICRO, auxOrder) &&
 							   !eMicro_mostrarLista(arrayMicros, MICRO_MAX, arrayChoferes, CHOFER_MAX, arrayEmpresas, EMPRESA_MAX, arrayTipos, TIPO_MAX))
 							{
 								printf("\nLista de Micros mostrada correctamente\n");
@@ -166,9 +166,11 @@ int main(void)
 
 					case 9:
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nUsted ha salido del menu\n");
+
+							flagExit = 1;
 						}
 
 						break;
@@ -179,7 +181,7 @@ int main(void)
 			system("pause");
 			system("cls");
 
-		} while(opcion != 9 || respuesta == 'N');
+		} while(opcion != 9 || !flagExit);
 	}
 
 	else

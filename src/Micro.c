@@ -14,7 +14,7 @@ int eMicro_inicializar(eMicro array[], int len)
 	{
 		for(i = 0; i < len; i++)
 		{
-			array[i].isEmpty = TRUE;
+			array[i].isEmpty = TRUE_MICRO;
 		}
 
 		retorno = 0;
@@ -29,18 +29,18 @@ int eMicro_hardcodear(eMicro array[], int len, int* id)
 	int indice;
 	int i;
 	int cant;
-	int flag = FALSE;
+	int flag = FALSE_MICRO;
 
 	eMicro auxArray[] =
 	{
-		{0, 1000, 5000, 50, 1, FALSE},
-		{0, 1003, 5002, 30, 1, FALSE},
-		{0, 1000, 5001, 40, 2, FALSE},
-		{0, 1003, 5003, 30, 2, FALSE},
-		{0, 1002, 5000, 50, 3, FALSE},
-		{0, 1001, 5002, 10, 3, FALSE},
-		{0, 1000, 5003, 20, 4, FALSE},
-		{0, 1003, 5000, 50, 4, FALSE},
+		{0, 1000, 5000, 50, 1, FALSE_MICRO},
+		{0, 1003, 5002, 30, 1, FALSE_MICRO},
+		{0, 1000, 5001, 40, 2, FALSE_MICRO},
+		{0, 1003, 5003, 50, 2, FALSE_MICRO},
+		{0, 1002, 5000, 50, 3, FALSE_MICRO},
+		{0, 1001, 5002, 10, 3, FALSE_MICRO},
+		{0, 1000, 5003, 20, 4, FALSE_MICRO},
+		{0, 1003, 5000, 20, 4, FALSE_MICRO},
 	};
 
 	if(array != NULL && len > 0 && id != NULL)
@@ -58,7 +58,7 @@ int eMicro_hardcodear(eMicro array[], int len, int* id)
 
 					(*id)++;
 
-					flag = TRUE;
+					flag = TRUE_MICRO;
 				}
 
 				else
@@ -147,7 +147,7 @@ int eMicro_eliminar(eMicro array[], int len, int indice)
 
 	if(array != NULL && len > 0 && indice >= 0 && indice < len && !array[indice].isEmpty)
 	{
-		array[indice].isEmpty = TRUE;
+		array[indice].isEmpty = TRUE_MICRO;
 
 		retorno = 0;
 	}
@@ -178,25 +178,25 @@ int eMicro_elegirCriterioOrdenamiento(int* criterio)
             {
                 case 'A':
 
-                    *criterio = ID;
+                    *criterio = ID_MICRO;
 
                     break;
 
                 case 'B':
 
-                    *criterio = EMPRESA;
+                    *criterio = EMPRESA_MICRO;
 
                     break;
 
                 case 'C':
 
-                    *criterio = TIPO;
+                    *criterio = TIPO_MICRO;
 
                     break;
 
                 case 'D':
 
-                	*criterio = CAPACIDAD;
+                	*criterio = CAPACIDAD_MICRO;
 
                 	break;
             }
@@ -229,13 +229,13 @@ int eMicro_elegirSentidoOrdenamiento(int* order)
 			{
 				case 'A':
 
-					*order = UP;
+					*order = UP_MICRO;
 
 					break;
 
 				case 'B':
 
-					*order = DOWN;
+					*order = DOWN_MICRO;
 
 					break;
 			}
@@ -375,25 +375,25 @@ int eMicro_compararCriterio(eMicro* a, eMicro* b, int criterio)
 	{
 		switch(criterio)
 		{
-			case ID:
+			case ID_MICRO:
 
 				retorno = eMicro_compararInt(a->idEmpresa, b->idEmpresa);
 
 				break;
 
-			case EMPRESA:
+			case EMPRESA_MICRO:
 
 				retorno = eMicro_compararInt(a->idEmpresa, b->idEmpresa);
 
 				break;
 
-			case TIPO:
+			case TIPO_MICRO:
 
 				retorno = eMicro_compararInt(a->idTipo, b->idTipo);
 
 				break;
 
-			case CAPACIDAD:
+			case CAPACIDAD_MICRO:
 
 				retorno = eMicro_compararInt(a->capacidad, b->capacidad);
 
@@ -413,13 +413,13 @@ int eMicro_ordenar(eMicro array[], int len, int criterio1, int criterio2, int or
 	int flagSwap;
 
 	if(array != NULL && len > 0 && criterio1 >= 0 && criterio2 >= 0 &&
-	   criterio1 != criterio2 && (order == UP || order == DOWN))
+	   criterio1 != criterio2 && (order == UP_MICRO || order == DOWN_MICRO))
 	{
 		auxLen = len;
 
 		do
 		{
-			flagSwap = FALSE;
+			flagSwap = FALSE_MICRO;
 
 			for(i = 0; i < auxLen - 1; i++)
 			{
@@ -427,10 +427,10 @@ int eMicro_ordenar(eMicro array[], int len, int criterio1, int criterio2, int or
 				{
 					auxCmp = eMicro_compararCriterio(&array[i], &array[i + 1], criterio1);
 
-					if((auxCmp == order - !order || (!auxCmp && eMicro_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order)) &&
+					if(auxCmp + !auxCmp * eMicro_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order &&
 					   !eMicro_swap(&array[i], &array[i + 1]))
 					{
-						flagSwap = TRUE;
+						flagSwap = TRUE_MICRO;
 					}
 				}
 			}

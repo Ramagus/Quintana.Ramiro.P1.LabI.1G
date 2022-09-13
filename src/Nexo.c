@@ -112,8 +112,7 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 	int indiceChofer;
 	int indiceEmpresa;
 	int indiceTipo;
-	char auxResp;
-	char respuesta;
+	int flagExit = FALSE_MICRO;
 
 	if(arrayMicros != NULL && lenMicros > 0 && arrayChoferes != NULL && lenChoferes > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && idMicro != NULL)
 	{
@@ -137,7 +136,7 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 
 							printf("\tALTA DE MICRO\n");
 
-							if(!eMicro_cargarEnArray(arrayMicros, lenMicros, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, indiceMicro, idMicro))
+							if(!eMicro_cargarEnArray(arrayMicros, lenMicros, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, arrayChoferes, lenChoferes, indiceMicro, idMicro))
 							{
 								printf("\nAlta de Micro realizada con exito\n");
 							}
@@ -162,7 +161,7 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 							if(!eMicro_mostrarLista(arrayMicros, lenMicros, arrayChoferes, lenChoferes, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos) &&
 							   !utn_getNumero(&auxId, "\nIngrese el ID de Micro a modificar: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1, 1000, 2) &&
 							   !eMicro_encontrarPorId(arrayMicros, lenMicros, auxId, &indiceMicro) &&
-							   !eChofer_encontrarPorId(arrayChoferes, lenChoferes, arrayMicros[indiceMicro].id, &indiceChofer) &&
+							   !eChofer_encontrarPorId(arrayChoferes, lenChoferes, arrayMicros[indiceMicro].idChofer, &indiceChofer) &&
 							   !eEmpresa_encontrarPorId(arrayEmpresas, lenEmpresas, arrayMicros[indiceMicro].idEmpresa, &indiceEmpresa) &&
 							   !eTipo_encontrarPorId(arrayTipos, lenTipos, arrayMicros[indiceMicro].idTipo, &indiceTipo))
 							{
@@ -176,9 +175,9 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 								printf("|%-10s|%-20s|%-20s|%-10s|%-20s|\n", "ID", "EMPRESA", "TIPO", "CAPACIDAD", "CHOFER");
 								printf("*----------*--------------------*--------------------*----------*--------------------*\n");
 								eMicro_mostrarUnMicro(&arrayMicros[indiceMicro], &arrayEmpresas[indiceEmpresa], &arrayTipos[indiceTipo], &arrayChoferes[indiceChofer]);
-								printf("*----------*--------------------*--------------------*----------*--------------------*\n");
+								printf("\n*----------*--------------------*--------------------*----------*--------------------*\n");
 
-								if(verificarRespuesta(&auxResp, "\nEsta seguro que desea modificar a este Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
+								if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar a este Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
 								   !eMicro_modificar(arrayMicros, lenMicros, arrayTipos, lenTipos, indiceMicro))
 								{
 									printf("\nModificacion de Micro realizada con exito\n");
@@ -210,6 +209,7 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 							if(!eMicro_mostrarLista(arrayMicros, lenMicros, arrayChoferes, lenChoferes, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos) &&
 							   !utn_getNumero(&auxId, "\nIngrese el ID de Micro a eliminar: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1, 1000, 2) &&
 							   !eMicro_encontrarPorId(arrayMicros, lenMicros, auxId, &indiceMicro) &&
+							   !eChofer_encontrarPorId(arrayChoferes, lenChoferes, arrayMicros[indiceMicro].idChofer, &indiceChofer) &&
 							   !eEmpresa_encontrarPorId(arrayEmpresas, lenEmpresas, arrayMicros[indiceMicro].idEmpresa, &indiceEmpresa) &&
 							   !eTipo_encontrarPorId(arrayTipos, lenTipos, arrayMicros[indiceMicro].idTipo, &indiceTipo))
 							{
@@ -223,9 +223,9 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 								printf("|%-10s|%-20s|%-20s|%-10s|%-20s|\n", "ID", "EMPRESA", "TIPO", "CAPACIDAD", "CHOFER");
 								printf("*----------*--------------------*--------------------*----------*--------------------*\n");
 								eMicro_mostrarUnMicro(&arrayMicros[indiceMicro], &arrayEmpresas[indiceEmpresa], &arrayTipos[indiceTipo], &arrayChoferes[indiceChofer]);
-								printf("*----------*--------------------*--------------------*----------*--------------------*\n");
+								printf("\n*----------*--------------------*--------------------*----------*--------------------*\n");
 
-								if(verificarRespuesta(&auxResp, "\nEsta seguro que desea eliminar a este Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
+								if(utn_respuestaEsAfirmativa("\nEsta seguro que desea eliminar a este Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
 								   !eMicro_eliminar(arrayMicros, lenMicros, indiceMicro))
 								{
 									printf("\nBaja de Micro realizada con exito\n");
@@ -252,16 +252,18 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 
 					case 4:
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nHa salido del menu de ABM Micros\n");
+
+							flagExit = TRUE_MICRO;
 						}
 
 						break;
 				}
 			}
 
-		} while(opcion != 4 || respuesta == 'N');
+		} while(opcion != 4 || !flagExit);
 
 		retorno = 0;
 	}
@@ -269,25 +271,29 @@ int ABM_eMicro(eMicro arrayMicros[], int lenMicros, eChofer arrayChoferes[], int
 	return retorno;
 }
 
-int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int* idMicro)
+int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, eChofer arrayChoferes[], int lenChoferes, int* idMicro)
 {
 	int retorno = -1;
 	int indiceEmpresa;
 	int indiceTipo;
+	int indiceChofer;
 
 	eMicro aux;
 
-	if(unMicro != NULL && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && idMicro != NULL &&
+	if(unMicro != NULL && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && arrayChoferes != NULL && lenChoferes > 0 && idMicro != NULL &&
 	   !eEmpresa_mostrarLista(arrayEmpresas, lenEmpresas) &&
 	   !utn_getNumero(&aux.idEmpresa, "\nIngrese ID de Empresa: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1000, 2000, 2) &&
 	   !eEmpresa_encontrarPorId(arrayEmpresas, lenEmpresas, aux.idEmpresa, &indiceEmpresa) &&
 	   !eTipo_mostrarLista(arrayTipos, lenTipos) &&
 	   !utn_getNumero(&aux.idTipo, "\nIngrese ID de Tipo: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 5000, 6000, 2) &&
 	   !eTipo_encontrarPorId(arrayTipos, lenTipos, aux.idTipo, &indiceTipo) &&
-	   !utn_getNumero(&aux.capacidad, "\nIngrese capacidad entre 1 y 50: ", "Error. Ingrese solo numeros enteros entre 1 y 50: ", 1, 50, 2))
+	   !utn_getNumero(&aux.capacidad, "\nIngrese capacidad entre 1 y 50: ", "Error. Ingrese solo numeros enteros entre 1 y 50: ", 1, 50, 2) &&
+	   !eChofer_mostrarLista(arrayChoferes, lenChoferes) &&
+	   !utn_getNumero(&aux.idChofer, "\nIngrese ID de Chofer: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1, 4, 2) &&
+	   !eChofer_encontrarPorId(arrayChoferes, lenChoferes, aux.idChofer, &indiceChofer))
 	{
 		aux.id = *idMicro;
-		aux.isEmpty = FALSE;
+		aux.isEmpty = FALSE_MICRO;
 
 		*unMicro = aux;
 
@@ -299,13 +305,13 @@ int eMicro_cargarUnMicro(eMicro* unMicro, eEmpresa arrayEmpresas[], int lenEmpre
 	return retorno;
 }
 
-int eMicro_cargarEnArray(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int indiceMicro, int* idMicro)
+int eMicro_cargarEnArray(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, eChofer arrayChoferes[], int lenChoferes, int indiceMicro, int* idMicro)
 {
 	int retorno = -1;
 
-	if(arrayMicros != NULL && lenMicros > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 &&
+	if(arrayMicros != NULL && lenMicros > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && arrayChoferes != NULL && lenChoferes > 0 &&
 	   indiceMicro >= 0 && indiceMicro < lenMicros && idMicro != NULL && arrayMicros[indiceMicro].isEmpty &&
-	   !eMicro_cargarUnMicro(&arrayMicros[indiceMicro], arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, idMicro))
+	   !eMicro_cargarUnMicro(&arrayMicros[indiceMicro], arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, arrayChoferes, lenChoferes, idMicro))
 	{
 		retorno = 0;
 	}
@@ -337,9 +343,9 @@ int eMicro_modificar(eMicro arrayMicros[], int lenMicros, eTipo arrayTipos[], in
 {
 	int retorno = -1;
 	char opcion;
-	char respuesta;
 	int auxIndice;
-	int flag = FALSE;
+	int flagMod = FALSE_MICRO;
+	int flagExit = FALSE_MICRO;
 
 	int auxIdTipo;
 	int auxCapacidad;
@@ -359,44 +365,46 @@ int eMicro_modificar(eMicro arrayMicros[], int lenMicros, eTipo arrayTipos[], in
 				{
 					case 'A':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea modificar el Tipo? (S/N): ", "Error. Solo S o N: ") == 1 &&
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar el Tipo? (S/N): ", "Error. Solo S o N: ") == 1 &&
 						   !eTipo_mostrarLista(arrayTipos, lenTipos) &&
 						   !utn_getNumero(&auxIdTipo, "\nIngrese nuevo ID de Tipo: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 5000, 6000, 2) &&
 						   !eTipo_encontrarPorId(arrayTipos, lenTipos, auxIdTipo, &auxIndice))
 						{
 							arrayMicros[indiceMicro].idTipo = auxIdTipo;
 
-							flag = TRUE;
+							flagMod = TRUE_MICRO;
 						}
 
 						break;
 
 					case 'B':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea modificar la capacidad? (S/N): ", "Error. Solo S o N: ") == 1 &&
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar la capacidad? (S/N): ", "Error. Solo S o N: ") == 1 &&
 						   !utn_getNumero(&auxCapacidad, "\nIngrese nueva capacidad entre 1 y 50: ", "Error. Ingrese solo numeros enteros entre 1 y 50: ", 1, 50, 2))
 						{
 							arrayMicros[indiceMicro].capacidad = auxCapacidad;
 
-							flag = TRUE;
+							flagMod = TRUE_MICRO;
 						}
 
 						break;
 
 					case 'C':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nHa salido del menu de modificacion\n");
+
+							flagExit = TRUE_MICRO;
 						}
 
 						break;
 				}
 			}
 
-		} while(opcion != 'C' || respuesta == 'N');
+		} while(opcion != 'C' || !flagExit);
 
-		if(flag)
+		if(flagMod)
 		{
 			retorno = 0;
 		}
@@ -501,8 +509,7 @@ int ABM_eViaje(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], int le
 	int indiceEmpresa;
 	int indiceTipo;
 	int indiceDest;
-	char auxResp;
-	char respuesta;
+	int flagExit = FALSE_VIAJE;
 
 	if(arrayViajes != NULL && lenViajes > 0 && arrayMicros != NULL && lenMicros > 0 && arrayChoferes != NULL && lenChoferes > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && arrayDestinos != NULL && lenDestinos > 0 && idViaje != NULL)
 	{
@@ -570,7 +577,7 @@ int ABM_eViaje(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], int le
 								eViaje_mostrarUnViaje(&arrayViajes[indiceViaje], &arrayMicros[indiceMicro], &arrayEmpresas[indiceEmpresa], &arrayTipos[indiceTipo], &arrayDestinos[indiceDest]);
 								printf("*----------*--------------------*--------------------*----------*--------------------*----------*\n");
 
-								if(verificarRespuesta(&auxResp, "\nEsta seguro que desea modificar a este Viaje? (S/N): ", "\nError. Solo S o N: ") == 1 &&
+								if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar a este Viaje? (S/N): ", "\nError. Solo S o N: ") == 1 &&
 								   !eViaje_modificar(arrayViajes, lenViajes, arrayMicros, lenMicros, arrayChoferes, lenChoferes, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, arrayDestinos, lenDestinos, indiceViaje))
 								{
 									printf("\nModificacion de Viaje realizada con exito\n");
@@ -621,7 +628,7 @@ int ABM_eViaje(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], int le
 								eViaje_mostrarUnViaje(&arrayViajes[indiceViaje], &arrayMicros[indiceMicro], &arrayEmpresas[indiceEmpresa], &arrayTipos[indiceTipo], &arrayDestinos[indiceDest]);
 								printf("*----------*--------------------*--------------------*----------*--------------------*----------*\n");
 
-								if(verificarRespuesta(&auxResp, "\nEsta seguro que desea eliminar a este Viaje? (S/N): ", "\nError. Solo S o N: ") == 1 &&
+								if(utn_respuestaEsAfirmativa("\nEsta seguro que desea eliminar a este Viaje? (S/N): ", "\nError. Solo S o N: ") == 1 &&
 								   !eViaje_eliminar(arrayViajes, lenViajes, indiceViaje))
 								{
 									printf("\nBaja de Viaje realizada con exito\n");
@@ -648,16 +655,18 @@ int ABM_eViaje(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], int le
 
 					case 4:
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nHa salido del menu de ABM Viajes\n");
+
+							flagExit = TRUE_VIAJE;
 						}
 
 						break;
 				}
 			}
 
-		} while(opcion != 4 || respuesta == 'N');
+		} while(opcion != 4 || !flagExit);
 
 		retorno = 0;
 	}
@@ -679,10 +688,10 @@ int eViaje_cargarUnViaje(eViaje* unViaje, eMicro arrayMicros[], int lenMicros, e
 	   !eDestino_mostrarLista(arrayDestinos, lenDestino) &&
 	   !utn_getNumero(&aux.idDestino, "\nIngrese ID de Destino: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 20000, 30000, 2) &&
 	   !eDestino_encontrarPorId(arrayDestinos, lenDestino, aux.idDestino, &indiceDest) &&
-	   !cargarFecha(&aux.fecha))
+	   !eFecha_cargar(&aux.fecha))
 	{
 		aux.id = *idViaje;
-		aux.isEmpty = FALSE;
+		aux.isEmpty = FALSE_VIAJE;
 
 		*unViaje = aux;
 
@@ -733,8 +742,8 @@ int eViaje_modificar(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 {
 	int retorno = -1;
 	char opcion;
-	char respuesta;
-	int flag = FALSE;
+	int flagMod = FALSE_VIAJE;
+	int flagExit = FALSE_VIAJE;
 
 	eViaje aux;
 
@@ -753,56 +762,58 @@ int eViaje_modificar(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 				{
 					case 'A':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea modificar el ID de Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar el ID de Micro? (S/N): ", "Error. Solo S o N: ") == 1 &&
 						   !eMicro_mostrarLista(arrayMicros, lenMicros, arrayChoferes, lenChoferes, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos) &&
 						   !utn_getNumero(&aux.idMicro, "\nIngrese nuevo ID de Micro: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1, 1000, 2))
 						{
 							arrayViajes[indiceViaje].idMicro = aux.idMicro;
 
-							flag = TRUE;
+							flagMod = TRUE_VIAJE;
 						}
 
 						break;
 
 					case 'B':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea modificar el Destino? (S/N): ", "Error. Solo S o N: ") == 1 &&
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar el Destino? (S/N): ", "Error. Solo S o N: ") == 1 &&
 						   !eDestino_mostrarLista(arrayDestinos, lenDestinos) &&
 						   !utn_getNumero(&aux.idDestino, "\nIngrese nuevo ID de Destino: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 20000, 30000, 2))
 						{
 							arrayViajes[indiceViaje].idDestino = aux.idDestino;
 
-							flag = TRUE;
+							flagMod = TRUE_VIAJE;
 						}
 
 						break;
 
 					case 'C':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea modificar la fecha? (S/N): ", "Error. Solo S o N: ") == 1 &&
-						   !cargarFecha(&aux.fecha))
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea modificar la fecha? (S/N): ", "Error. Solo S o N: ") == 1 &&
+						   !eFecha_cargar(&aux.fecha))
 						{
 							arrayViajes[indiceViaje].fecha = aux.fecha;
 
-							flag = TRUE;
+							flagMod = TRUE_VIAJE;
 						}
 
 						break;
 
 					case 'D':
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nHa salido del menu de modificacion\n");
+
+							flagExit = TRUE_VIAJE;
 						}
 
 						break;
 				}
 			}
 
-		} while(opcion != 'D' || respuesta == 'N');
+		} while(opcion != 'D' || !flagExit);
 
-		if(flag)
+		if(flagMod)
 		{
 			retorno = 0;
 		}
@@ -818,7 +829,7 @@ int eViaje_mostrarUnViaje(eViaje* unViaje, eMicro* unMicro, eEmpresa* unaEmpresa
 	if(unViaje != NULL && unMicro != NULL && unaEmpresa != NULL && unTipo != NULL && unDestino != NULL)
 	{
 		printf("|%-10d|%-20s|%-20s|%-10d|%-20s|", unViaje->id, unaEmpresa->descripcion, unTipo->descripcion, unMicro->capacidad, unDestino->descripcion);
-		mostrarFecha(&unViaje->fecha);
+		eFecha_mostrar(&unViaje->fecha);
 		printf("|\n");
 
 		retorno = 0;
@@ -914,7 +925,7 @@ int realizarInformes(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 	int indiceTipo;
 	int indiceDest;
 	float suma;
-	char respuesta;
+	int flagExit = 0;
 
 	if(arrayViajes != NULL && lenViajes > 0 && arrayMicros != NULL && lenMicros > 0 && arrayChoferes != NULL && lenChoferes > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 && arrayDestinos != NULL && lenDestinos > 0)
 	{
@@ -964,7 +975,19 @@ int realizarInformes(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 
 					case 3:
 
-						//--
+						if(!eEmpresa_mostrarLista(arrayEmpresas, lenEmpresas) &&
+						   !utn_getNumero(&auxId, "\nIngrese ID de Empresa: ", "Error. Ingrese solo numeros enteros dentro del rango: ", 1000, 2000, 2) &&
+						   !eEmpresa_encontrarPorId(arrayEmpresas, lenEmpresas, auxId, &indiceEmpresa) &&
+						   !eTipo_encontrarPorId(arrayTipos, lenTipos, 5003, &indiceTipo) &&
+						   !informarPromedioMicrosEmpresa(arrayMicros, lenMicros, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, indiceEmpresa, indiceTipo))
+						{
+							printf("\nMuestra realizada correctamente\n");
+						}
+
+						else
+						{
+							printf("\nError en la muestra\n");
+						}
 
 						break;
 
@@ -1063,7 +1086,7 @@ int realizarInformes(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 
 					case 10:
 
-						if(!cargarFecha(&auxFecha) && !eViaje_encontrarFecha(arrayViajes, lenViajes, &auxFecha, &indiceViaje) &&
+						if(!eFecha_cargar(&auxFecha) && !eViaje_encontrarFecha(arrayViajes, lenViajes, &auxFecha, &indiceViaje) &&
 						   !mostrarViajesXFecha(arrayViajes, lenViajes, arrayMicros, lenMicros, arrayEmpresas, lenEmpresas, arrayTipos, lenTipos, arrayDestinos, lenDestinos, indiceViaje))
 						{
 							printf("\nMuestra realizada correctamente\n");
@@ -1078,16 +1101,18 @@ int realizarInformes(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[], 
 
 					case 11:
 
-						if(verificarRespuesta(&respuesta, "\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
+						if(utn_respuestaEsAfirmativa("\nEsta seguro que desea salir del menu? (S/N): ", "Error. Solo S o N: ") == 1)
 						{
 							printf("\nHa salido del menu de Informes\n");
+
+							flagExit = 1;
 						}
 
 						break;
 				}
 			}
 
-		} while(opcion != 11 || respuesta == 'N');
+		} while(opcion != 11 || !flagExit);
 
 		retorno = 0;
 	}
@@ -1294,7 +1319,7 @@ int calcularMaximoDePasajerosDeEmpresas(int contEmpresas[], int lenEmpresas, int
 int mostrarEmpresaConMasPasajeros(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas)
 {
 	int retorno = -1;
-	int contEmpresas[4] = {0};
+	int contEmpresas[] = {0, 0, 0, 0};
 	int maximo;
 	int i;
 
@@ -1369,6 +1394,54 @@ int contarCantMicrosXEmpresa(eMicro arrayMicros[], int lenMicros, int idEmpresa,
 	return retorno;
 }
 
+int contarCantMicrosEmpresaTipo(eMicro arrayMicros[], int lenMicros, int idEmpresa, int idTipo, int* cont)
+{
+	int retorno = -1;
+	int i;
+
+	if(arrayMicros != NULL && lenMicros > 0 && idEmpresa > 0 && idTipo > 0 && cont != NULL)
+	{
+		for(i = 0; i < lenMicros; i++)
+		{
+			if(arrayMicros[i].idEmpresa == idEmpresa && arrayMicros[i].idTipo == idTipo)
+			{
+				(*cont)++;
+			}
+		}
+
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+int informarPromedioMicrosEmpresa(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas, eTipo arrayTipos[], int lenTipos, int indiceEmpresa, int indiceTipo)
+{
+	int retorno = -1;
+	int cantMicrosTipo = 0;
+	int cantMicrosTotal = 0;
+	float promedio;
+
+	if(arrayMicros != NULL && lenMicros > 0 && arrayEmpresas != NULL && lenEmpresas > 0 && arrayTipos != NULL && lenTipos > 0 &&
+	   indiceEmpresa >= 0 && indiceEmpresa < lenEmpresas && indiceTipo >= 0 && indiceTipo < lenTipos &&
+	   !contarCantMicrosEmpresaTipo(arrayMicros, lenMicros, arrayEmpresas[indiceEmpresa].id, arrayTipos[indiceTipo].id, &cantMicrosTipo) &&
+	   !contarCantMicrosXEmpresa(arrayMicros, lenMicros, arrayEmpresas[indiceEmpresa].id, &cantMicrosTotal))
+	{
+		promedio = (float) cantMicrosTipo / cantMicrosTotal;
+
+		printf("\nEmpresa: %s\n\n", arrayEmpresas[indiceEmpresa].descripcion);
+
+		printf("--> Cantidad de Micros de Tipo %s: %d\n\n", arrayTipos[indiceTipo].descripcion, cantMicrosTipo);
+		printf("--> Cantidad de Micros Totales: %d\n\n", cantMicrosTotal);
+
+		printf("El promedio de Cantidad de Tipo sobre Cantidad Total es: %g\n", promedio);
+
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
 int calcularMinimoDeMicrosDeEmpresas(int contEmpresas[], int lenEmpresas, int* minimo)
 {
 	int retorno = -1;
@@ -1393,7 +1466,7 @@ int calcularMinimoDeMicrosDeEmpresas(int contEmpresas[], int lenEmpresas, int* m
 int mostrarEmpresaConMenosMicros(eMicro arrayMicros[], int lenMicros, eEmpresa arrayEmpresas[], int lenEmpresas)
 {
 	int retorno = -1;
-	int contEmpresas[4] = {0};
+	int contEmpresas[] = {0, 0, 0, 0};
 	int minimo;
 	int i;
 
@@ -1543,7 +1616,7 @@ int mostrarMicrosXDestino(eViaje arrayViajes[], int lenViajes, eMicro arrayMicro
 			   !eChofer_encontrarPorId(arrayChoferes, lenChoferes, arrayMicros[i].idChofer, &indiceChofer))
 			{
 				eMicro_mostrarUnMicro(&arrayMicros[indiceMicro], &arrayEmpresas[indiceEmpresa], &arrayTipos[indiceTipo], &arrayChoferes[indiceChofer]);
-				mostrarFecha(&arrayViajes[i].fecha);
+				eFecha_mostrar(&arrayViajes[i].fecha);
 				printf("|\n");
 				flag = 1;
 			}
@@ -1584,7 +1657,7 @@ int mostrarViajesXFecha(eViaje arrayViajes[], int lenViajes, eMicro arrayMicros[
 		printf("\tLISTA DE VIAJES POR FECHA\n");
 
 		printf("\n\n\tViajes realizados en la fecha ");
-		mostrarFecha(&arrayViajes[indiceViaje].fecha);
+		eFecha_mostrar(&arrayViajes[indiceViaje].fecha);
 		printf("\n\n");
 
 		printf("*----------*----------------------------------------------------*--------------------*----------*\n");

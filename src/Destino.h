@@ -1,19 +1,19 @@
 #ifndef DESTINO_H_
 #define DESTINO_H_
 
-#define DEST_DESC_LEN 25
-#define TRUE 1
-#define FALSE 0
-#define UP 1
-#define DOWN 0
-#define ID 0
-#define DESC 1
-#define PRECIO 2
+#define DESC_LEN_DEST 25
+#define TRUE_DEST 1
+#define FALSE_DEST 0
+#define UP_DEST 1
+#define DOWN_DEST 0
+#define ID_DEST 0
+#define DESC_DEST 1
+#define PRECIO_DEST 2
 
 typedef struct
 {
 	int id;
-	char descripcion[DEST_DESC_LEN];
+	char descripcion[DESC_LEN_DEST];
 	float precio;
 
 } eDestino;
@@ -69,7 +69,7 @@ int eDestino_elegirSentidoOrdenamiento(int* order);
  * \param a int Primer int
  * \param b int Segundo int
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer int es menor al segundo int
  *             ( 0) si ambos int son iguales
  *             ( 1) si el primer int es mayor al segundo int
@@ -83,7 +83,7 @@ int eDestino_compararInt(int a, int b);
  * \param a float Primer float
  * \param b float Segundo float
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer float es menor al segundo float
  *             ( 0) si ambos float son iguales
  *             ( 1) si el primer float es mayor al segundo float
@@ -97,7 +97,7 @@ int eDestino_compararFloat(float a, float b);
  * \param a char Primer char
  * \param b char Segundo char
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer char es menor al segundo char en su valor
  *             ( 0) si ambos char son iguales
  *             ( 1) si el primer char es mayor al segundo char en su valor
@@ -112,7 +112,7 @@ int eDestino_compararChar(char a, char b);
  * \param b char* Segundo string
  * \param length int Longitud de String
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer string es menor al segundo string en su valor
  *             ( 0) si ambos string son iguales
  *             ( 1) si el primer string es mayor al segundo string en su valor

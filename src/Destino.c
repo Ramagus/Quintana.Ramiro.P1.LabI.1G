@@ -83,19 +83,19 @@ int eDestino_elegirCriterioOrdenamiento(int* criterio)
             {
                 case 'A':
 
-                    *criterio = ID;
+                    *criterio = ID_DEST;
 
                     break;
 
                 case 'B':
 
-                    *criterio = DESC;
+                    *criterio = DESC_DEST;
 
                     break;
 
                 case 'C':
 
-                    *criterio = PRECIO;
+                    *criterio = PRECIO_DEST;
 
                     break;
             }
@@ -128,13 +128,13 @@ int eDestino_elegirSentidoOrdenamiento(int* order)
 			{
 				case 'A':
 
-					*order = UP;
+					*order = UP_DEST;
 
 					break;
 
 				case 'B':
 
-					*order = DOWN;
+					*order = DOWN_DEST;
 
 					break;
 			}
@@ -274,19 +274,19 @@ int eDestino_compararCriterio(eDestino* a, eDestino* b, int criterio)
 	{
 		switch(criterio)
 		{
-			case ID:
+			case ID_DEST:
 
 				retorno = eDestino_compararInt(a->id, b->id);
 
 				break;
 
-			case DESC:
+			case DESC_DEST:
 
-				retorno = eDestino_compararString(a->descripcion, b->descripcion, DEST_DESC_LEN);
+				retorno = eDestino_compararString(a->descripcion, b->descripcion, DESC_LEN_DEST);
 
 				break;
 
-			case PRECIO:
+			case PRECIO_DEST:
 
 				retorno = eDestino_compararFloat(a->precio, b->precio);
 
@@ -306,22 +306,22 @@ int eDestino_ordenar(eDestino array[], int len, int criterio1, int criterio2, in
 	int flagSwap;
 
 	if(array != NULL && len > 0 && criterio1 >= 0 && criterio2 >= 0 &&
-	   criterio1 != criterio2 && (order == UP || order == DOWN))
+	   criterio1 != criterio2 && (order == UP_DEST || order == DOWN_DEST))
 	{
 		auxLen = len;
 
 		do
 		{
-			flagSwap = FALSE;
+			flagSwap = FALSE_DEST;
 
 			for(i = 0; i < auxLen - 1; i++)
 			{
 				auxCmp = eDestino_compararCriterio(&array[i], &array[i + 1], criterio1);
 
-				if((auxCmp == order - !order || (!auxCmp && eDestino_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order)) &&
+				if(auxCmp + !auxCmp * eDestino_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order &&
 				   !eDestino_swap(&array[i], &array[i + 1]))
 				{
-					flagSwap = TRUE;
+					flagSwap = TRUE_DEST;
 				}
 			}
 

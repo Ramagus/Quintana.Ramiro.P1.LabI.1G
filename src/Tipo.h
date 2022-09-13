@@ -1,18 +1,18 @@
 #ifndef TIPO_H_
 #define TIPO_H_
 
-#define TIPO_DESC_LEN 20
-#define TRUE 1
-#define FALSE 0
-#define UP 1
-#define DOWN 0
-#define ID 0
-#define DESC 1
+#define DESC_LEN_TIPO 20
+#define TRUE_TIPO 1
+#define FALSE_TIPO 0
+#define UP_TIPO 1
+#define DOWN_TIPO 0
+#define ID_TIPO 0
+#define DESC_TIPO 1
 
 typedef struct
 {
 	int id;
-	char descripcion[TIPO_DESC_LEN];
+	char descripcion[DESC_LEN_TIPO];
 
 } eTipo;
 

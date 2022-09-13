@@ -14,7 +14,7 @@ int eViaje_inicializar(eViaje array[], int len)
 	{
 		for(i = 0; i < len; i++)
 		{
-			array[i].isEmpty = TRUE;
+			array[i].isEmpty = TRUE_VIAJE;
 		}
 
 		retorno = 0;
@@ -29,16 +29,16 @@ int eViaje_hardcodear(eViaje array[], int len, int* id)
 	int indice;
 	int i;
 	int cant;
-	int flag = FALSE;
+	int flag = FALSE_VIAJE;
 
 	eViaje auxArray[] =
 	{
-		{0, 3, 20003, {1, 9, 2000}, FALSE},
-		{0, 3, 20001, {5, 6, 2002}, FALSE},
-		{0, 1, 20002, {9, 4, 2004}, FALSE},
-		{0, 1, 20000, {5, 6, 2002}, FALSE},
-		{0, 2, 20001, {1, 9, 2000}, FALSE},
-		{0, 2, 20003, {7, 7, 2010}, FALSE}
+		{0, 3, 20003, {1, 9, 2000}, FALSE_VIAJE},
+		{0, 3, 20001, {5, 6, 2002}, FALSE_VIAJE},
+		{0, 1, 20002, {9, 4, 2004}, FALSE_VIAJE},
+		{0, 1, 20000, {5, 6, 2002}, FALSE_VIAJE},
+		{0, 2, 20001, {1, 9, 2000}, FALSE_VIAJE},
+		{0, 2, 20003, {7, 7, 2010}, FALSE_VIAJE}
 	};
 
 	if(array != NULL && len > 0 && id != NULL)
@@ -56,7 +56,7 @@ int eViaje_hardcodear(eViaje array[], int len, int* id)
 
 					(*id)++;
 
-					flag = TRUE;
+					flag = TRUE_VIAJE;
 				}
 
 				else
@@ -87,7 +87,7 @@ int eViaje_arrayIsEmpty(eViaje array[], int len)
 
 		for(i = 0; i < len; i++)
 		{
-			if(array[i].isEmpty == FALSE)
+			if(!array[i].isEmpty)
 			{
 				retorno = 0;
 				break;
@@ -146,7 +146,7 @@ int eViaje_eliminar(eViaje array[], int len, int indice)
 
 	if(array != NULL && len > 0 && indice >= 0 && indice < len && !array[indice].isEmpty)
 	{
-		array[indice].isEmpty = TRUE;
+		array[indice].isEmpty = TRUE_VIAJE;
 
 		retorno = 0;
 	}
@@ -177,25 +177,25 @@ int eViaje_elegirCriterioOrdenamiento(int* criterio)
             {
                 case 'A':
 
-                    *criterio = ID;
+                    *criterio = ID_VIAJE;
 
                     break;
 
                 case 'B':
 
-                    *criterio = ID_MICRO;
+                    *criterio = ID_MICRO_VIAJE;
 
                     break;
 
                 case 'C':
 
-                    *criterio = ID_DESTINO;
+                    *criterio = ID_DEST_VIAJE;
 
                     break;
 
                 case 'D':
 
-                    *criterio = FECHA;
+                    *criterio = FECHA_VIAJE;
 
                     break;
             }
@@ -228,13 +228,13 @@ int eViaje_elegirSentidoOrdenamiento(int* order)
 			{
 				case 'A':
 
-					*order = UP;
+					*order = UP_VIAJE;
 
 					break;
 
 				case 'B':
 
-					*order = DOWN;
+					*order = DOWN_VIAJE;
 
 					break;
 			}
@@ -374,29 +374,29 @@ int eViaje_compararCriterio(eViaje* a, eViaje* b, int criterio)
 	{
 		switch(criterio)
 		{
-			case ID:
+			case ID_VIAJE:
 
 				retorno = eViaje_compararInt(a->id, b->id);
 
 				break;
 
-			case ID_MICRO:
+			case ID_MICRO_VIAJE:
 
 				retorno = eViaje_compararInt(a->idMicro, b->idMicro);
 
 				break;
 
-			case ID_DESTINO:
+			case ID_DEST_VIAJE:
 
 				retorno = eViaje_compararInt(a->idDestino, b->idDestino);
 
 				break;
 
-			/*case FECHA:
+			case FECHA_VIAJE:
 
-				retorno = eViaje_compararString(a->dato3, b->dato3, MAX_STR_GEN_2);
+				retorno = eFecha_comparar(&a->fecha, &b->fecha);
 
-				break;*/
+				break;
 		}
 	}
 
@@ -412,13 +412,13 @@ int eViaje_ordenar(eViaje array[], int len, int criterio1, int criterio2, int or
 	int flagSwap;
 
 	if(array != NULL && len > 0 && criterio1 >= 0 && criterio2 >= 0 &&
-	   criterio1 != criterio2 && (order == UP || order == DOWN))
+	   criterio1 != criterio2 && (order == UP_VIAJE || order == DOWN_VIAJE))
 	{
 		auxLen = len;
 
 		do
 		{
-			flagSwap = FALSE;
+			flagSwap = FALSE_VIAJE;
 
 			for(i = 0; i < auxLen - 1; i++)
 			{
@@ -426,10 +426,10 @@ int eViaje_ordenar(eViaje array[], int len, int criterio1, int criterio2, int or
 				{
 					auxCmp = eViaje_compararCriterio(&array[i], &array[i + 1], criterio1);
 
-				    if((auxCmp == order - !order || (!auxCmp && eViaje_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order)) &&
+				    if(auxCmp + !auxCmp * eViaje_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order &&
 				       !eViaje_swap(&array[i], &array[i + 1]))
 				    {
-				    	flagSwap = TRUE;
+				    	flagSwap = TRUE_VIAJE;
 				    }
 				}
 			}
@@ -450,7 +450,7 @@ int eViaje_encontrarFecha(eViaje array[], int len, eFecha* fecha, int* indice)
 	int i;
 
 	if(array != NULL && len > 0 && fecha != NULL &&
-	   !validarFecha(fecha->dia, fecha->mes, fecha->anio) && indice != NULL)
+	   !eFecha_validar(fecha->dia, fecha->mes, fecha->anio) && indice != NULL)
 	{
 		for(i = 0; i < len; i++)
 		{

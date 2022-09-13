@@ -82,13 +82,13 @@ int eEmpresa_elegirCriterioOrdenamiento(int* criterio)
             {
                 case 'A':
 
-                    *criterio = ID;
+                    *criterio = ID_EMPRESA;
 
                     break;
 
                 case 'B':
 
-                    *criterio = DESC;
+                    *criterio = DESC_EMPRESA;
 
                     break;
             }
@@ -121,13 +121,13 @@ int eEmpresa_elegirSentidoOrdenamiento(int* order)
 			{
 				case 'A':
 
-					*order = UP;
+					*order = UP_EMPRESA;
 
 					break;
 
 				case 'B':
 
-					*order = DOWN;
+					*order = DOWN_EMPRESA;
 
 					break;
 			}
@@ -267,15 +267,15 @@ int eEmpresa_compararCriterio(eEmpresa* a, eEmpresa* b, int criterio)
 	{
 		switch(criterio)
 		{
-			case ID:
+			case ID_EMPRESA:
 
 				retorno = eEmpresa_compararInt(a->id, b->id);
 
 				break;
 
-			case DESC:
+			case DESC_EMPRESA:
 
-				retorno = eEmpresa_compararString(a->descripcion, b->descripcion, EMPRESA_DESC_LEN);
+				retorno = eEmpresa_compararString(a->descripcion, b->descripcion, DESC_LEN_EMPRESA);
 
 				break;
 		}
@@ -293,22 +293,22 @@ int eEmpresa_ordenar(eEmpresa array[], int len, int criterio1, int criterio2, in
 	int flagSwap;
 
 	if(array != NULL && len > 0 && criterio1 >= 0 && criterio2 >= 0 &&
-	   criterio1 != criterio2 && (order == UP || order == DOWN))
+	   criterio1 != criterio2 && (order == UP_EMPRESA || order == DOWN_EMPRESA))
 	{
 		auxLen = len;
 
 		do
 		{
-			flagSwap = FALSE;
+			flagSwap = FALSE_EMPRESA;
 
 			for(i = 0; i < auxLen - 1; i++)
 			{
 				auxCmp = eEmpresa_compararCriterio(&array[i], &array[i + 1], criterio1);
 
-				if((auxCmp == order - !order || (!auxCmp && eEmpresa_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order)) &&
+				if(auxCmp + !auxCmp * eEmpresa_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order &&
 				   !eEmpresa_swap(&array[i], &array[i + 1]))
 				{
-					flagSwap = TRUE;
+					flagSwap = TRUE_EMPRESA;
 				}
 			}
 

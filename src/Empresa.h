@@ -1,18 +1,18 @@
 #ifndef EMPRESA_H_
 #define EMPRESA_H_
 
-#define EMPRESA_DESC_LEN 20
-#define TRUE 1
-#define FALSE 0
-#define UP 1
-#define DOWN 0
-#define ID 0
-#define DESC 1
+#define DESC_LEN_EMPRESA 20
+#define TRUE_EMPRESA 1
+#define FALSE_EMPRESA 0
+#define UP_EMPRESA 1
+#define DOWN_EMPRESA 0
+#define ID_EMPRESA 0
+#define DESC_EMPRESA 1
 
 typedef struct
 {
 	int id;
-	char descripcion[EMPRESA_DESC_LEN];
+	char descripcion[DESC_LEN_EMPRESA];
 
 } eEmpresa;
 

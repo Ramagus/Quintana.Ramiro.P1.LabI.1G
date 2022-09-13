@@ -2,14 +2,14 @@
 #define MICRO_H_
 
 
-#define TRUE 1
-#define FALSE 0
-#define UP 1
-#define DOWN 0
-#define ID 0
-#define EMPRESA 1
-#define TIPO 2
-#define CAPACIDAD 3
+#define TRUE_MICRO 1
+#define FALSE_MICRO 0
+#define UP_MICRO 1
+#define DOWN_MICRO 0
+#define ID_MICRO 0
+#define EMPRESA_MICRO 1
+#define TIPO_MICRO 2
+#define CAPACIDAD_MICRO 3
 
 typedef struct
 {
@@ -119,7 +119,7 @@ int eMicro_elegirSentidoOrdenamiento(int* order);
  * \param a int Primer int
  * \param b int Segundo int
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer int es menor al segundo int
  *             ( 0) si ambos int son iguales
  *             ( 1) si el primer int es mayor al segundo int
@@ -133,7 +133,7 @@ int eMicro_compararInt(int a, int b);
  * \param a float Primer float
  * \param b float Segundo float
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer float es menor al segundo float
  *             ( 0) si ambos float son iguales
  *             ( 1) si el primer float es mayor al segundo float
@@ -147,7 +147,7 @@ int eMicro_compararFloat(float a, float b);
  * \param a char Primer char
  * \param b char Segundo char
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer char es menor al segundo char en su valor
  *             ( 0) si ambos char son iguales
  *             ( 1) si el primer char es mayor al segundo char en su valor
@@ -162,7 +162,7 @@ int eMicro_compararChar(char a, char b);
  * \param b char* Segundo string
  * \param length int Longitud de String
  *
- * \return int (-2) si hubo un error
+ * \return int (-2) si hubo un error en los parámetros
  *             (-1) si el primer string es menor al segundo string en su valor
  *             ( 0) si ambos string son iguales
  *             ( 1) si el primer string es mayor al segundo string en su valor

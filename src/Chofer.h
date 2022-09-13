@@ -1,12 +1,12 @@
 #ifndef CHOFER_H_
 #define CHOFER_H_
 
-#define NOMBRE_LEN 20
+#define NOMBRE_LEN_CHOFER 20
 
 typedef struct
 {
 	int id;
-	char nombre[NOMBRE_LEN];
+	char nombre[NOMBRE_LEN_CHOFER];
 	char sexo;
 
 } eChofer;

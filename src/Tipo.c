@@ -82,13 +82,13 @@ int eTipo_elegirCriterioOrdenamiento(int* criterio)
             {
                 case 'A':
 
-                    *criterio = ID;
+                    *criterio = ID_TIPO;
 
                     break;
 
                 case 'B':
 
-                    *criterio = DESC;
+                    *criterio = DESC_TIPO;
 
                     break;
             }
@@ -121,13 +121,13 @@ int eTipo_elegirSentidoOrdenamiento(int* order)
 			{
 				case 'A':
 
-					*order = UP;
+					*order = UP_TIPO;
 
 					break;
 
 				case 'B':
 
-					*order = DOWN;
+					*order = DOWN_TIPO;
 
 					break;
 			}
@@ -267,15 +267,15 @@ int eTipo_compararCriterio(eTipo* a, eTipo* b, int criterio)
 	{
 		switch(criterio)
 		{
-			case ID:
+			case ID_TIPO:
 
 				retorno = eTipo_compararInt(a->id, b->id);
 
 				break;
 
-			case DESC:
+			case DESC_TIPO:
 
-				retorno = eTipo_compararString(a->descripcion, b->descripcion, TIPO_DESC_LEN);
+				retorno = eTipo_compararString(a->descripcion, b->descripcion, DESC_LEN_TIPO);
 
 				break;
 		}
@@ -293,22 +293,22 @@ int eTipo_ordenar(eTipo array[], int len, int criterio1, int criterio2, int orde
 	int flagSwap;
 
 	if(array != NULL && len > 0 && criterio1 >= 0 && criterio2 >= 0 &&
-	   criterio1 != criterio2 && (order == UP || order == DOWN))
+	   criterio1 != criterio2 && (order == UP_TIPO || order == DOWN_TIPO))
 	{
 		auxLen = len;
 
 		do
 		{
-			flagSwap = FALSE;
+			flagSwap = FALSE_TIPO;
 
 			for(i = 0; i < auxLen - 1; i++)
 			{
 				auxCmp = eTipo_compararCriterio(&array[i], &array[i + 1], criterio1);
 
-				if((auxCmp == order - !order || (!auxCmp && eTipo_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order)) &&
+				if(auxCmp + !auxCmp * eTipo_compararCriterio(&array[i], &array[i + 1], criterio2) == order - !order &&
 				   !eTipo_swap(&array[i], &array[i + 1]))
 				{
-					flagSwap = TRUE;
+					flagSwap = TRUE_TIPO;
 				}
 			}
 

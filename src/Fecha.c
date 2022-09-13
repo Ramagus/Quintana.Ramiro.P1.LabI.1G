@@ -4,7 +4,7 @@
 #include "Fecha.h"
 
 
-int cargarFecha(eFecha* unaFecha)
+int eFecha_cargar(eFecha* unaFecha)
 {
 	int retorno = -1;
 
@@ -20,8 +20,8 @@ int cargarFecha(eFecha* unaFecha)
 
 		if(!utn_getNumero(&aux.dia, "\nIngrese dia de la fecha entre 1 y 31: ", "Error. Ingrese solo numeros enteros entre 1 y 31: ", 1, 31, 2) &&
 		   !utn_getNumero(&aux.mes, "\nIngrese mes de la fecha entre 1 y 12: ", "Error. Ingrese solo numeros enteros entre 1 y 12: ", 1, 12, 2) &&
-		   !utn_getNumero(&aux.anio, "\nIngrese anio de la fecha entre 2000 y 2030: ", "Error. Ingrese solo numeros enteros entre 2000 y 2030: ", 2000, 2030, 2) &&
-		   !validarFecha(aux.dia, aux.mes, aux.anio))
+		   !utn_getNumero(&aux.anio, "\nIngrese anio de la fecha entre 1 y 9999: ", "Error. Ingrese solo numeros enteros entre 1 y 9999: ", 1, 9999, 2) &&
+		   !eFecha_validar(aux.dia, aux.mes, aux.anio))
 		{
 			*unaFecha = aux;
 			retorno = 0;
@@ -31,12 +31,12 @@ int cargarFecha(eFecha* unaFecha)
 	return retorno;
 }
 
-int validarFecha(int dia, int mes, int anio)
+int eFecha_validar(int dia, int mes, int anio)
 {
 	int retorno = -1;
 	int diaMaximo;
 
-	if(dia >= 1 && mes >= 1 && mes <= 12 && anio >= 1)
+	if(dia >= 1 && mes >= 1 && mes <= 12 && anio >= 1 && anio <= 9999)
 	{
 		switch(mes)
 		{
@@ -51,7 +51,7 @@ int validarFecha(int dia, int mes, int anio)
 
 			case 2:
 
-				if(esBisiesto(anio))
+				if(eFecha_esBisiesto(anio))
 				{
 					diaMaximo = 29;
 				}
@@ -77,11 +77,11 @@ int validarFecha(int dia, int mes, int anio)
 	return retorno;
 }
 
-int esBisiesto(int anio)
+int eFecha_esBisiesto(int anio)
 {
 	int retorno = -1;
 
-	if(anio >= 1)
+	if(anio >= 1 && anio <= 9999)
 	{
 		retorno = 0;
 
@@ -94,7 +94,7 @@ int esBisiesto(int anio)
 	return retorno;
 }
 
-int mostrarFecha(eFecha* unaFecha)
+int eFecha_mostrar(eFecha* unaFecha)
 {
 	int retorno = -1;
 
@@ -106,4 +106,46 @@ int mostrarFecha(eFecha* unaFecha)
 	}
 
 	return retorno;
+}
+
+int eFecha_compararLongInt(long int a, long int b)
+{
+    int retorno = -2;
+
+    if(a > 0 && b > 0)
+    {
+        if(a < b)
+        {
+            retorno = -1;
+        }
+
+        else if(a == b)
+        {
+            retorno = 0;
+        }
+
+        else
+        {
+            retorno = 1;
+        }
+    }
+
+    return retorno;
+}
+
+int eFecha_comparar(eFecha* a, eFecha* b)
+{
+    int retorno = -2;
+    long int auxFecha1;
+    long int auxFecha2;
+
+    if(a != NULL && b != NULL)
+    {
+        auxFecha1 = a->anio * 10000 + a->mes * 100 + a->dia;
+        auxFecha2 = b->anio * 10000 + b->mes * 100 + b->dia;
+
+        retorno = eFecha_compararLongInt(auxFecha1, auxFecha2);
+    }
+
+    return retorno;
 }
